@@ -1,4 +1,4 @@
-﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
@@ -9,7 +9,9 @@ using Microsoft.Maui.Devices;
 using osu.Framework.Allocation;
 using osu.Framework.Development;
 using osu.Framework.Extensions.ObjectExtensions;
+using osu.Framework.Graphics;
 using osu.Framework.Platform;
+using osu.Game.Rulesets.UI;
 using osu.Game;
 using osu.Game.Screens;
 using osu.Game.Updater;
@@ -46,6 +48,13 @@ namespace osu.Android
         }
 
         public override Version AssemblyVersion => new Version(packageInfo.VersionName.AsNonNull().Split('-').First());
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
+        {
+            var deps = new DependencyContainer(base.CreateChildDependencies(parent));
+            deps.CacheAs<IHapticFeedbackProvider>(new AndroidHapticFeedback(gameActivity));
+            return deps;
+        }
 
         protected override void LoadComplete()
         {

@@ -44,7 +44,9 @@ namespace osu.Game.Updater
             {
                 bool includePrerelease = stream == Configuration.ReleaseStream.Tachyon;
 
-                OsuJsonWebRequest<GitHubRelease[]> releasesRequest = new OsuJsonWebRequest<GitHubRelease[]>("https://api.github.com/repos/ppy/osu/releases?per_page=10&page=1");
+                // Check the fork's releases first; fall back to upstream if not found.
+                string releaseRepo = Environment.GetEnvironmentVariable("OSU_GITHUB_REPO") ?? "ppy/osu";
+                OsuJsonWebRequest<GitHubRelease[]> releasesRequest = new OsuJsonWebRequest<GitHubRelease[]>($"https://api.github.com/repos/{releaseRepo}/releases?per_page=10&page=1");
                 await releasesRequest.PerformAsync(cancellationToken).ConfigureAwait(false);
 
                 GitHubRelease[] releases = releasesRequest.ResponseObject;

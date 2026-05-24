@@ -87,6 +87,9 @@ namespace osu.Android
             // OnNewIntent() only fires for an activity if it's *re-launched* while it's on top of the activity stack.
             // on first launch we still have to fire manually.
             // reference: https://developer.android.com/reference/android/app/Activity#onNewIntent(android.content.Intent)
+            // Point the update notifier at this fork's GitHub releases.
+            Environment.SetEnvironmentVariable("OSU_GITHUB_REPO", "BorgorNinja/osu");
+
             handleIntent(Intent);
 
             Debug.Assert(Window != null);
