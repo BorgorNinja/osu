@@ -53,7 +53,7 @@ jobs:
       - name: Build Debug APK
         run: >
           dotnet build
-          -c Release
+          -c Debug
           osu.Android.slnf
           /p:Version=${{ steps.version.outputs.version }}
           /p:ApplicationDisplayVersion=${{ steps.version.outputs.version }}

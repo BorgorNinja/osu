@@ -9,9 +9,8 @@ using osu.Game.Rulesets.Scoring;
 namespace osu.Game.Rulesets.UI
 {
     /// <summary>
-    /// A component that triggers <see cref="IHapticFeedbackProvider"/> on note judgements.
-    /// Intended for use on mobile platforms (Android, iOS). Injected into gameplay by the
-    /// platform-specific game class when an <see cref="IHapticFeedbackProvider"/> is available.
+    /// Triggers <see cref="IHapticFeedbackProvider"/> callbacks on note judgements.
+    /// Add this component to gameplay on platforms which support haptic feedback.
     /// </summary>
     public partial class MobileHapticFeedbackComponent : Component
     {

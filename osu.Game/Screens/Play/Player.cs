@@ -195,6 +195,9 @@ namespace osu.Game.Screens.Play
 
         private ScreenSuspensionHandler screenSuspension;
 
+        [Resolved(CanBeNull = true)]
+        private IHapticFeedbackProvider? hapticFeedback { get; set; }
+
         private DependencyContainer dependencies;
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
@@ -224,7 +227,7 @@ namespace osu.Game.Screens.Play
         }
 
         [BackgroundDependencyLoader(true)]
-        private void load(OsuConfigManager config, OsuGameBase game, CancellationToken cancellationToken, IHapticFeedbackProvider? haptics = null)
+        private void load(OsuConfigManager config, OsuGameBase game, CancellationToken cancellationToken)
         {
             var gameplayMods = Mods.Value.Select(m => m.DeepClone()).ToArray();
 
@@ -277,8 +280,8 @@ namespace osu.Game.Screens.Play
             AddInternal(screenSuspension = new ScreenSuspensionHandler(GameplayClockContainer));
 
             // Wire up haptic feedback on mobile platforms (Android / iOS).
-            if (haptics != null)
-                AddInternal(new MobileHapticFeedbackComponent(haptics));
+            if (hapticFeedback != null)
+                AddInternal(new MobileHapticFeedbackComponent(hapticFeedback));
 
             Score = CreateScore(playableBeatmap);
 

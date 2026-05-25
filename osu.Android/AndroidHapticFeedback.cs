@@ -10,18 +10,18 @@ using osu.Game.Rulesets.UI;
 namespace osu.Android
 {
     /// <summary>
-    /// Android haptic feedback implementation for osu! hit objects.
-    /// Triggers vibration patterns based on judgement type.
+    /// Android haptic feedback for osu! hit objects.
+    /// Uses <see cref="VibrationEffect"/> on API 26+ with a legacy fallback.
     /// </summary>
     public class AndroidHapticFeedback : IHapticFeedbackProvider
     {
         private readonly Vibrator? vibrator;
-        private readonly bool canUseVibrationEffect;
+        private readonly bool useVibrationEffect;
 
         public AndroidHapticFeedback(Context context)
         {
             vibrator = context.GetSystemService(Context.VibratorService) as Vibrator;
-            canUseVibrationEffect = Build.VERSION.SdkInt >= BuildVersionCodes.O;
+            useVibrationEffect = Build.VERSION.SdkInt >= BuildVersionCodes.O;
         }
 
         public void TriggerHitFeedback(JudgementResult result)
@@ -29,13 +29,12 @@ namespace osu.Android
             if (vibrator?.HasVibrator != true)
                 return;
 
-            // Scale feedback intensity based on judgement quality.
             int durationMs = result.Type switch
             {
                 HitResult.Perfect or HitResult.Great => 20,
                 HitResult.Good or HitResult.Ok => 30,
                 HitResult.Meh => 40,
-                _ => 0
+                _ => 0,
             };
 
             if (durationMs == 0)
@@ -49,8 +48,7 @@ namespace osu.Android
             if (vibrator?.HasVibrator != true)
                 return;
 
-            // Two short pulses for miss.
-            if (canUseVibrationEffect)
+            if (useVibrationEffect)
             {
                 var waveform = VibrationEffect.CreateWaveform(
                     new long[] { 0, 40, 40, 40 },
@@ -68,10 +66,8 @@ namespace osu.Android
 
         private void vibrate(int durationMs, int amplitude)
         {
-            if (canUseVibrationEffect)
-            {
+            if (useVibrationEffect)
                 vibrator!.Vibrate(VibrationEffect.CreateOneShot(durationMs, amplitude));
-            }
             else
             {
 #pragma warning disable CA1422

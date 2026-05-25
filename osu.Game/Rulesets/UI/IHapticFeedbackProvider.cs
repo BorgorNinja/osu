@@ -11,12 +11,12 @@ namespace osu.Game.Rulesets.UI
     public interface IHapticFeedbackProvider
     {
         /// <summary>
-        /// Trigger a short tap feedback for a successful hit.
+        /// Trigger a short tap feedback scaled to the given hit judgement quality.
         /// </summary>
         void TriggerHitFeedback(JudgementResult result);
 
         /// <summary>
-        /// Trigger a longer buzz for a miss.
+        /// Trigger a distinctive buzz pattern to signal a miss.
         /// </summary>
         void TriggerMissFeedback();
     }
