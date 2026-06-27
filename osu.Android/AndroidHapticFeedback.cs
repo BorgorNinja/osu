@@ -20,7 +20,9 @@ namespace osu.Android
 
         public AndroidHapticFeedback(Context context)
         {
+#pragma warning disable CA1422
             vibrator = context.GetSystemService(Context.VibratorService) as Vibrator;
+#pragma warning restore CA1422
             useVibrationEffect = Build.VERSION.SdkInt >= BuildVersionCodes.O;
         }
 

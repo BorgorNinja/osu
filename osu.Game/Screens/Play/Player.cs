@@ -196,7 +196,7 @@ namespace osu.Game.Screens.Play
         private ScreenSuspensionHandler screenSuspension;
 
         [Resolved(CanBeNull = true)]
-        private IHapticFeedbackProvider? hapticFeedback { get; set; }
+        private IHapticFeedbackProvider hapticFeedback { get; set; }
 
         private DependencyContainer dependencies;
 
